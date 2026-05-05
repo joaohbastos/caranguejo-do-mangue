@@ -42,7 +42,7 @@ colonia_do_mangue.exe
 | Elemento | Detalhe |
 |---|---|
 | **Fome** | Sobe todo turno. Se chegar a 10 → morte (−3 pts) |
-| **Maturidade** | Após 8 rodadas na colônia → saída natural (+5 pts) |
+| **Maturidade** | Após 5 rodadas na colônia → saída natural (+5 pts) |
 | **Caranguejo-Rei** | Chega com fome 5. Se madurar → +1 spot permanente |
 | **Meta de fase** | Maturos ≥ (2+fase) e Mortos ≤ (3+fase) |
 | **Recompensa** | +1 spot permanente +20 pts |
