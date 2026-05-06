@@ -116,6 +116,7 @@ typedef struct {
 
     Texture2D texCaranguejo;
     Texture2D texRei;
+    Texture2D texFundo;
     int       texturasCarregadas;
 } EstadoJogo;
 

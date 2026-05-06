@@ -76,14 +76,12 @@ void renderCaranguejoCard(EstadoJogo *j, Caranguejo *c, int x, int y, int seleci
 ───────────────────────────────────────────────────────────────── */
 void renderMenu(EstadoJogo *j) {
     /* Fundo gradiente simulado */
-    DrawRectangleGradientV(0, 0, LARGURA, ALTURA,
-        CLITERAL(Color){10, 35, 20, 255},
-        CLITERAL(Color){5, 20, 12, 255});
+    DrawTexture(j->texFundo, 0, 0, WHITE);
 
     /* Título */
     desenharTextoCentrado("COLONIA DO MANGUE", 80, 52, COR_DESTAQUE);
     desenharTextoCentrado("Manguezal do Rio Capibaribe", 140, 22, COR_NEUTRO);
-    desenharTextoCentrado("🦀  Cuide da sua colonia de caranguejos  🦀", 175, 18, Fade(WHITE, 0.6f));
+    desenharTextoCentrado(" Cuide da sua colonia de caranguejos ", 175, 18, Fade(WHITE, 0.6f));
 
     /* Caixa de nome */
     int bx = LARGURA / 2 - 200, by = 250;
@@ -175,7 +173,7 @@ void renderJogo(EstadoJogo *j) {
 
     /* Contadores */
     char contadores[64];
-    snprintf(contadores, 64, "🟢 Maturos: %d   💀 Mortos: %d",
+    snprintf(contadores, 64, "Maturos: %d   Mortos: %d",
              j->caranguejosMaturos, j->caranguejosMortos);
     DrawText(contadores, LARGURA - MeasureText(contadores, 16) - 12, 18, 16, COR_NEUTRO);
 
@@ -289,7 +287,7 @@ void renderEvento(EstadoJogo *j) {
     DrawRectangleRoundedLines((Rectangle){px, py, 640, 400}, 0.08f, 8, 2.0f, COR_DESTAQUE);
 
     if (j->evento.tipo == EVENTO_MARE) {
-        desenharTextoCentrado("🌊  MARE ENCHENDO RAPIDO!", py + 20, 28, COR_DESTAQUE);
+        desenharTextoCentrado(" MARE ENCHENDO RAPIDO!", py + 20, 28, COR_DESTAQUE);
         desenharTextoCentrado("A mare esta subindo depressa.", py + 65, 18, COR_TEXTO);
         desenharTextoCentrado("Voce precisa tomar uma decisao!", py + 90, 16, Fade(WHITE,0.6f));
 
@@ -316,7 +314,7 @@ void renderEvento(EstadoJogo *j) {
         }
 
     } else if (j->evento.tipo == EVENTO_REI) {
-        desenharTextoCentrado("👑  O CARANGUEJO-REI!", py + 20, 28, COR_DESTAQUE);
+        desenharTextoCentrado(" O CARANGUEJO-REI!", py + 20, 28, COR_DESTAQUE);
         desenharTextoCentrado("Um caranguejo dominante quer entrar na colonia.", py + 65, 18, COR_TEXTO);
         desenharTextoCentrado("Alto risco. Alta recompensa.", py + 90, 16, Fade(WHITE,0.6f));
 
@@ -362,10 +360,10 @@ void renderFaseResultado(EstadoJogo *j) {
     DrawRectangleRoundedLines((Rectangle){px, py, 560, 380}, 0.08f, 8, 2.0f, corBorda);
 
     if (passou) {
-        desenharTextoCentrado("🎉  FASE CONCLUIDA!", py + 20, 30, COR_OK);
+        desenharTextoCentrado(" FASE CONCLUIDA!", py + 20, 30, COR_OK);
         desenharTextoCentrado("Meta atingida! +1 spot permanente  +20 pts", py + 65, 18, COR_DESTAQUE);
     } else {
-        desenharTextoCentrado("❌  META NAO CUMPRIDA", py + 20, 30, COR_PERIGO);
+        desenharTextoCentrado(" META NAO CUMPRIDA", py + 20, 30, COR_PERIGO);
         desenharTextoCentrado("Penalidade: -10 pontos", py + 65, 18, COR_PERIGO);
     }
 
@@ -403,7 +401,7 @@ void renderGameOver(EstadoJogo *j) {
         CLITERAL(Color){35, 8, 8, 255},
         CLITERAL(Color){10, 5, 5, 255});
 
-    desenharTextoCentrado("💀  COLONIA EXTINTA", 100, 44, COR_PERIGO);
+    desenharTextoCentrado(" COLONIA EXTINTA", 100, 44, COR_PERIGO);
     desenharTextoCentrado("Os caranguejos do Capibaribe nao sobreviveram.", 165, 20, COR_NEUTRO);
 
     char buf[64];
@@ -448,7 +446,7 @@ void renderPlacar(EstadoJogo *j) {
         CLITERAL(Color){10, 35, 20, 255},
         CLITERAL(Color){5, 20, 12, 255});
 
-    desenharTextoCentrado("🏆  PLACAR DOS MELHORES MANEJADORES", 40, 28, COR_DESTAQUE);
+    desenharTextoCentrado(" PLACAR DOS MELHORES MANEJADORES", 40, 28, COR_DESTAQUE);
     desenharTextoCentrado("Manguezal do Rio Capibaribe", 80, 16, COR_NEUTRO);
 
     /* Cabeçalho da tabela */

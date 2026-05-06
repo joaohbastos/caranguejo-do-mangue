@@ -3,17 +3,19 @@
 int main(void) {
     InitWindow(LARGURA, ALTURA, "Colonia do Mangue — Manguezal do Rio Capibaribe");
     SetTargetFPS(60);
-    SetExitKey(KEY_NULL); /* Não fecha com ESC acidentalmente */
+    SetExitKey(KEY_NULL);
 
     EstadoJogo jogo = {0};
     filaInicializar(&jogo.fila);
     jogoCarregandoPlacar(&jogo);
-    jogo.tela         = TELA_MENU;
-    jogo.digitandoNome = 1;
-    jogo.texCaranguejo = LoadTexture("assets/crab.png");
-    jogo.texRei = LoadTexture("assets/crab_king.png");
-    jogo.texturasCarregadas = (jogo.texCaranguejo.id > 0 && jogo.texRei.id > 0);
+    jogo.tela           = TELA_MENU;
+    jogo.digitandoNome  = 1;
     jogo.nomeJogador[0] = '\0';
+
+    jogo.texFundo           = LoadTexture("assets/mangue_bg.png");
+    jogo.texCaranguejo      = LoadTexture("assets/crab.png");
+    jogo.texRei             = LoadTexture("assets/crab_king.png");
+    jogo.texturasCarregadas = (jogo.texCaranguejo.id > 0 && jogo.texRei.id > 0);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -31,6 +33,9 @@ int main(void) {
         EndDrawing();
     }
 
+    UnloadTexture(jogo.texFundo);
+    UnloadTexture(jogo.texCaranguejo);
+    UnloadTexture(jogo.texRei);
     filaLiberar(&jogo.fila);
     CloseWindow();
     return 0;
