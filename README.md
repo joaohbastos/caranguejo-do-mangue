@@ -25,9 +25,9 @@ pode aparecer a qualquer momento — cabe ao jogador manter todos vivos pelo mai
 
 ## 👥 Equipe
 
-# Arthur Sindeaux
-# Arthur Oliveira
-# Lucas Pinto
-# João Bastos
+Arthur Sindeaux
+Arthur Oliveira
+Lucas Pinto
+João Bastos
 
 Desenvolvido para a disciplina de Algoritmos e Estruturas de Dados — 2026.1
