@@ -186,10 +186,10 @@ static int rodadaUnica(Caranguejo **inicio, int numeroRodada, ParametrosFase fas
     return 1;
 }
 
-void jogarPartida(Caranguejo **inicio) {
+int jogarPartida(Caranguejo **inicio) {
     if (inicio == NULL || *inicio == NULL) {
         printf("\nColonia vazia. Nada a jogar.\n");
-        return;
+        return 0;
     }
 
     int proximoId    = proximoIdDisponivel(*inicio);
@@ -210,7 +210,7 @@ void jogarPartida(Caranguejo **inicio) {
         int sobreviveu = rodadaUnica(inicio, n, fase, &proximoId, &reiBonusDado);
         if (!sobreviveu) {
             printf("\nFim de jogo na rodada %d.\n", n);
-            return;
+            return n - 1;
         }
     }
 }

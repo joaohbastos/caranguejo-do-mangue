@@ -20,7 +20,8 @@ ParametrosFase aplicarFaseAtual(int rodada);
    Retorna 1 se encontrou e alimentou, 0 caso contrario. */
 int alimentarCaranguejo(Caranguejo *inicio, int id);
 
-/* Loop principal de uma partida. Roda multiplas rodadas ate game over. */
-void jogarPartida(Caranguejo **inicio);
+/* Loop principal de uma partida. Roda multiplas rodadas ate game over.
+   Retorna a pontuacao final (numero de rodadas completamente sobrevividas). */
+int jogarPartida(Caranguejo **inicio);
 
 #endif

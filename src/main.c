@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 #include "colonia.h"
@@ -17,13 +18,17 @@
 static void exibirMenu(void);
 static int  lerOpcao(void);
 static void descartarLinha(void);
-static void iniciarPartida(void);
+static void iniciarPartida(Registro **ranking);
 static void liberarColonia(Caranguejo **inicio);
+static void lerNomeJogador(char *destino, size_t tamanho);
 
 int main(void) {
     int opcao = 0;
+    Registro *ranking = NULL;
 
     srand((unsigned)time(NULL));
+
+    carregarPlacar(&ranking);
 
     do {
         exibirMenu();
@@ -31,7 +36,7 @@ int main(void) {
 
         switch (opcao) {
             case OP_JOGAR:
-                iniciarPartida();
+                iniciarPartida(&ranking);
                 break;
             case OP_CONFIG:
                 printf("\n[Configuracoes] Em construcao.\n\n");
@@ -47,6 +52,7 @@ int main(void) {
         }
     } while (opcao != OP_SAIR);
 
+    liberarPlacar(&ranking);
     return 0;
 }
 
@@ -79,7 +85,21 @@ static void descartarLinha(void) {
     }
 }
 
-static void iniciarPartida(void) {
+static void lerNomeJogador(char *destino, size_t tamanho) {
+    if (fgets(destino, (int)tamanho, stdin) == NULL) {
+        destino[0] = '\0';
+    }
+    size_t len = strlen(destino);
+    while (len > 0 && (destino[len - 1] == '\n' || destino[len - 1] == '\r')) {
+        destino[--len] = '\0';
+    }
+    if (destino[0] == '\0') {
+        strncpy(destino, "Anonimo", tamanho - 1);
+        destino[tamanho - 1] = '\0';
+    }
+}
+
+static void iniciarPartida(Registro **ranking) {
     Caranguejo *colonia = NULL;
 
     for (int i = 1; i <= CARANGUEJOS_INICIAIS; i++) {
@@ -96,9 +116,19 @@ static void iniciarPartida(void) {
     printf("\n[Jogar] Partida iniciada com %d caranguejos.\n",
            CARANGUEJOS_INICIAIS);
 
-    jogarPartida(&colonia);
-
+    int pontuacao = jogarPartida(&colonia);
     liberarColonia(&colonia);
+
+    char nome[50];
+    printf("\nPartida encerrada. Sua pontuacao: %d rodada(s) sobrevivida(s).\n",
+           pontuacao);
+    printf("Digite seu nome para o ranking: ");
+    lerNomeJogador(nome, sizeof(nome));
+
+    registrarPlacar(ranking, nome, pontuacao);
+    ordenarPlacar(ranking);
+    exibirPlacar(*ranking);
+    salvarPlacar(*ranking);
     printf("\n");
 }
 

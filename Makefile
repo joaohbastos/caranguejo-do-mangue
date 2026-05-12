@@ -1,7 +1,7 @@
 CC      = gcc
 CFLAGS  = -Wall -Wextra -std=c99 -Isrc
 
-SRC     = src/main.c src/colonia.c src/jogo.c src/eventos.c
+SRC     = src/main.c src/colonia.c src/jogo.c src/eventos.c src/ranking.c
 OBJ     = $(SRC:.c=.o)
 TARGET  = caranguejo
 
