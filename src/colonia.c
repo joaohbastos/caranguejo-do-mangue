@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "colonia.h"
@@ -56,28 +55,6 @@ int removerCaranguejo(Caranguejo **inicio, int id) {
         atual    = atual->proximo;
     }
     return 0;
-}
-
-void exibirColonia(Caranguejo *inicio) {
-    if (inicio == NULL) {
-        printf("  (Colonia vazia)\n");
-        return;
-    }
-
-    printf("  +-----+-------+------+----------+\n");
-    printf("  | ID  | Tipo  | Fome | Rodadas  |\n");
-    printf("  +-----+-------+------+----------+\n");
-
-    Caranguejo *atual = inicio;
-    while (atual != NULL) {
-        printf("  | %3d | %-5s | %d/%d  | %-8d |\n",
-               atual->id,
-               atual->ehRei ? "Rei" : "Comum",
-               atual->nivelFome, MAX_FOME,
-               atual->rodadasNaColonia);
-        atual = atual->proximo;
-    }
-    printf("  +-----+-------+------+----------+\n");
 }
 
 void aumentarFome(Caranguejo *inicio) {

@@ -1,7 +1,7 @@
 #ifndef RANKING_H
 #define RANKING_H
 
-#define ARQUIVO_PLACAR "placar.txt"
+#define ARQUIVO_PLACAR "ranking.dat"
 #define TOP_PLACAR     10
 
 typedef struct Registro {
@@ -10,20 +10,20 @@ typedef struct Registro {
     struct Registro *proximo;
 } Registro;
 
-/* Insere um novo registro no inicio da lista do ranking. */
-void registrarPlacar(Registro **inicio, const char *nome, int pontuacao);
+/* Insere um novo registro no inicio da lista do ranking.
+   Retorna 1 em sucesso, 0 em falha de alocacao. */
+int registrarPlacar(Registro **inicio, const char *nome, int pontuacao);
 
 /* Ordena a lista por pontuacao decrescente usando Insertion Sort. */
 void ordenarPlacar(Registro **inicio);
 
-/* Exibe os TOP_PLACAR melhores registros do ranking. */
-void exibirPlacar(Registro *inicio);
+/* Salva o ranking em ARQUIVO_PLACAR para persistir entre sessoes.
+   Retorna 1 em sucesso, 0 em falha de I/O. */
+int salvarPlacar(Registro *inicio);
 
-/* Salva o ranking em ARQUIVO_PLACAR para persistir entre sessoes. */
-void salvarPlacar(Registro *inicio);
-
-/* Le ARQUIVO_PLACAR (se existir) e popula a lista do ranking. */
-void carregarPlacar(Registro **inicio);
+/* Le ARQUIVO_PLACAR (se existir) e popula a lista do ranking.
+   Retorna 1 se carregou, 0 se nao havia arquivo. */
+int carregarPlacar(Registro **inicio);
 
 /* Libera todos os nos da lista do ranking. */
 void liberarPlacar(Registro **inicio);

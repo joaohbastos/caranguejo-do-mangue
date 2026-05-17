@@ -4,9 +4,9 @@
 #include <time.h>
 
 #include "colonia.h"
-#include "eventos.h"
-#include "jogo.h"
+#include "game_state.h"
 #include "ranking.h"
+#include "render_terminal.h"
 
 #define OP_JOGAR  1
 #define OP_CONFIG 2
@@ -19,7 +19,6 @@ static void exibirMenu(void);
 static int  lerOpcao(void);
 static void descartarLinha(void);
 static void iniciarPartida(Registro **ranking);
-static void liberarColonia(Caranguejo **inicio);
 static void lerNomeJogador(char *destino, size_t tamanho);
 
 int main(void) {
@@ -100,24 +99,25 @@ static void lerNomeJogador(char *destino, size_t tamanho) {
 }
 
 static void iniciarPartida(Registro **ranking) {
-    Caranguejo *colonia = NULL;
+    GameState gs;
+    gameStateInicializar(&gs);
 
     for (int i = 1; i <= CARANGUEJOS_INICIAIS; i++) {
         Caranguejo *novo = criarCaranguejo(i, 0);
         if (novo == NULL) {
             printf("\nFalha ao alocar colonia inicial.\n");
-            liberarColonia(&colonia);
+            gameStateLiberar(&gs);
             return;
         }
         novo->nivelFome = i;
-        inserirCaranguejo(&colonia, novo);
+        inserirCaranguejo(&gs.colonia, novo);
     }
 
     printf("\n[Jogar] Partida iniciada com %d caranguejos.\n",
            CARANGUEJOS_INICIAIS);
 
-    int pontuacao = jogarPartida(&colonia);
-    liberarColonia(&colonia);
+    int pontuacao = jogarPartidaTerminal(&gs);
+    gameStateLiberar(&gs);
 
     char nome[50];
     printf("\nPartida encerrada. Sua pontuacao: %d rodada(s) sobrevivida(s).\n",
@@ -127,17 +127,7 @@ static void iniciarPartida(Registro **ranking) {
 
     registrarPlacar(ranking, nome, pontuacao);
     ordenarPlacar(ranking);
-    exibirPlacar(*ranking);
+    renderExibirPlacar(*ranking);
     salvarPlacar(*ranking);
     printf("\n");
-}
-
-static void liberarColonia(Caranguejo **inicio) {
-    Caranguejo *atual = *inicio;
-    while (atual != NULL) {
-        Caranguejo *prox = atual->proximo;
-        free(atual);
-        atual = prox;
-    }
-    *inicio = NULL;
 }

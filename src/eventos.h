@@ -2,6 +2,7 @@
 #define EVENTOS_H
 
 #include "colonia.h"
+#include "game_state.h"
 
 #define REI_RODADAS_PARA_BONUS 5
 
@@ -12,16 +13,24 @@ typedef enum {
     EVENTO_REI    = 3
 } TipoEvento;
 
+typedef struct {
+    int ids[2];
+    int n;
+} SiriResultado;
+
 /* Sorteia um evento real (MARE, SIRI ou REI). Requer srand previo. */
 TipoEvento sortearEvento(void);
 
-/* Apresenta o evento ao jogador e aplica as consequencias.
-   Para EVENTO_REI usa proximoId como id do novo Caranguejo Rei.
-   Retorna 1 se o Rei foi aceito (id consumido), 0 caso contrario. */
-int aplicarEscolha(Caranguejo **inicio, TipoEvento evento, int proximoId);
+/* Aplica o evento MARE: +1 de fome em todos os caranguejos. */
+void aplicarMare(GameState *gs);
 
-/* Pergunta ao jogador se aceita o Caranguejo Rei e o insere se aceito.
-   Retorna 1 se aceito, 0 caso contrario. */
-int gerenciarRei(Caranguejo **inicio, int proximoId);
+/* Aplica o efeito do siri quando o jogador escolhe Ignorar:
+   ate 2 caranguejos sorteados ganham +2 de fome.
+   Retorna ids afetados (na ordem do sorteio) e a quantidade. */
+SiriResultado aplicarSiriIgnorado(GameState *gs);
+
+/* Insere um novo Caranguejo Rei na colonia.
+   Retorna 1 em sucesso, 0 em falha de alocacao. */
+int inserirRei(GameState *gs, int proximoId);
 
 #endif

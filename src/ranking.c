@@ -4,20 +4,20 @@
 
 #include "ranking.h"
 
-void registrarPlacar(Registro **inicio, const char *nome, int pontuacao) {
+int registrarPlacar(Registro **inicio, const char *nome, int pontuacao) {
     if (inicio == NULL || nome == NULL) {
-        return;
+        return 0;
     }
     Registro *novo = (Registro *)malloc(sizeof(Registro));
     if (novo == NULL) {
-        printf("Falha ao alocar registro do ranking.\n");
-        return;
+        return 0;
     }
     strncpy(novo->nome, nome, sizeof(novo->nome) - 1);
     novo->nome[sizeof(novo->nome) - 1] = '\0';
     novo->pontuacao = pontuacao;
     novo->proximo   = *inicio;
     *inicio = novo;
+    return 1;
 }
 
 void ordenarPlacar(Registro **inicio) {
@@ -48,51 +48,41 @@ void ordenarPlacar(Registro **inicio) {
     *inicio = ordenada;
 }
 
-void exibirPlacar(Registro *inicio) {
-    printf("\n================ TOP %d - RANKING ================\n", TOP_PLACAR);
-    if (inicio == NULL) {
-        printf("  (ranking vazio)\n");
-        printf("==================================================\n");
-        return;
-    }
-    int pos = 1;
-    for (Registro *r = inicio; r != NULL && pos <= TOP_PLACAR; r = r->proximo, pos++) {
-        printf("  %2d. %-40s %5d\n", pos, r->nome, r->pontuacao);
-    }
-    printf("==================================================\n");
-}
-
-void salvarPlacar(Registro *inicio) {
+int salvarPlacar(Registro *inicio) {
     FILE *f = fopen(ARQUIVO_PLACAR, "w");
     if (f == NULL) {
-        printf("Falha ao abrir %s para escrita.\n", ARQUIVO_PLACAR);
-        return;
+        return 0;
     }
+    /* Format: "nome;pontuacao" — name first because the GUI table reads it that way. */
     for (Registro *r = inicio; r != NULL; r = r->proximo) {
-        fprintf(f, "%d %s\n", r->pontuacao, r->nome);
+        fprintf(f, "%s;%d\n", r->nome, r->pontuacao);
     }
     fclose(f);
+    return 1;
 }
 
-void carregarPlacar(Registro **inicio) {
+int carregarPlacar(Registro **inicio) {
     if (inicio == NULL) {
-        return;
+        return 0;
     }
     FILE *f = fopen(ARQUIVO_PLACAR, "r");
     if (f == NULL) {
-        return; /* primeira execucao: sem arquivo ainda */
+        return 0;
     }
 
+    /* Parse "nome;pontuacao" — split on the last ';' so names with semicolons
+     * (unlikely but defensive) still parse the trailing score. */
     char linha[128];
     while (fgets(linha, sizeof(linha), f) != NULL) {
-        int pontuacao;
-        char nome[50];
-        if (sscanf(linha, "%d %49[^\n]", &pontuacao, nome) == 2) {
-            registrarPlacar(inicio, nome, pontuacao);
-        }
+        char *sep = strrchr(linha, ';');
+        if (sep == NULL) continue;
+        *sep = '\0';
+        int pontuacao = atoi(sep + 1);
+        registrarPlacar(inicio, linha, pontuacao);
     }
     fclose(f);
     ordenarPlacar(inicio);
+    return 1;
 }
 
 void liberarPlacar(Registro **inicio) {

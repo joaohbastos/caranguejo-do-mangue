@@ -20,9 +20,6 @@ void inserirCaranguejo(Caranguejo **inicio, Caranguejo *novo);
 /* Remove e libera o caranguejo cujo id corresponde. Retorna 1 se removeu, 0 caso contrario. */
 int removerCaranguejo(Caranguejo **inicio, int id);
 
-/* Exibe na tela o estado atual de cada caranguejo da colonia. */
-void exibirColonia(Caranguejo *inicio);
-
 /* Incrementa o nivel de fome de cada caranguejo da colonia em 1, respeitando MAX_FOME. */
 void aumentarFome(Caranguejo *inicio);
 
