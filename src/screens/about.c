@@ -2,11 +2,8 @@
 #include "screen.h"
 #include "theme.h"
 
-/* Tela "Sobre" — sem logica por frame. */
 void AboutUpdate(void) { }
 
-/* Renderiza titulo, contexto cultural do manguezal, instrucoes
- * "Como jogar" e creditos da equipe. Botao "Voltar" leva ao menu. */
 void AboutDraw(void) {
     const char *title = "SOBRE O JOGO";
     int title_size = 40;
@@ -19,8 +16,6 @@ void AboutDraw(void) {
     gText("Guardioes do Mangue", x, y, 28, COR_ACENTO);
     y += 44;
 
-    /* One-paragraph mangrove / Capibaribe context, broken into lines that
-     * fit comfortably in 1000 px at font size 18. */
     const char *paragraph[] = {
         "Voce e o guardiao de uma colonia de caranguejos-uca nos manguezais",
         "do Rio Capibaribe, em Recife. As mares trazem comida e perigos: gerencie",

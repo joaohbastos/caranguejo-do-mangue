@@ -30,7 +30,7 @@ SRC_GUI = src/main_gui.c \
 OBJ_GUI = $(SRC_GUI:.c=.o)
 TARGET_GUI = caranguejo_gui
 GUI_CFLAGS = -Wall -Wextra -std=c99 -Isrc -Isrc/screens
-GUI_LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm
+GUI_LDFLAGS = -lraylib -lm -lpthread -ldl -lrt -lX11
 
 all: terminal
 
