@@ -1,5 +1,5 @@
-#ifndef SCREEN_H
-#define SCREEN_H
+#ifndef SCREENS_SCREEN_H
+#define SCREENS_SCREEN_H
 
 #include "raylib.h"
 #include "../game_state.h"
@@ -54,4 +54,4 @@ void SettingsUpdate(void);  void SettingsDraw(void);
 void GameUpdate(void);      void GameDraw(void);     void GameEnter(void);
 void GameOverUpdate(void);  void GameOverDraw(void); void GameOverEnter(void);
 
-#endif /* SCREEN_H */
+#endif /* SCREENS_SCREEN_H */

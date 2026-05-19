@@ -73,7 +73,7 @@ void SettingsDraw(void) {
     y += 34;
     Rectangle field = (Rectangle){ x, y, SCREEN_W - 2 * x, 50 };
     DrawRectangleRounded(field, 0.2f, 8, COR_PAINEL);
-    DrawRectangleRoundedLines(field, 0.2f, 8, COR_ACENTO);
+    DrawRectangleRoundedLines(field, 0.2f, 8, 1.5f, COR_ACENTO);
     gText(player_name, (int)field.x + 14, (int)field.y + 14, 24, COR_TEXTO);
 
     /* Blinking cursor at the end of the buffer */
@@ -95,6 +95,18 @@ void SettingsDraw(void) {
     }
     gText("(clique para alternar)", (int)r_mode.x + (int)r_mode.width + 16,
              (int)r_mode.y + 16, 16, COR_TEXTO);
+    y += 80;
+
+    /* Fullscreen toggle */
+    gText("Tela cheia", x, y, 22, COR_ACENTO);
+    y += 34;
+    const char *fs_label = IsWindowFullscreen() ? "Tela Cheia: ON" : "Tela Cheia: OFF";
+    Rectangle r_fs = (Rectangle){ x, y, 280, 50 };
+    if (Button(r_fs, fs_label, COR_PAINEL, COR_PAINEL_HOVER, COR_TEXTO)) {
+        ToggleFullscreen();
+    }
+    gText("(ou F11)", (int)r_fs.x + (int)r_fs.width + 16,
+             (int)r_fs.y + 16, 16, COR_TEXTO);
     y += 80;
 
     /* Reset ranking */

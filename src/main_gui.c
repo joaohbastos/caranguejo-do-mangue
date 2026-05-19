@@ -52,15 +52,36 @@ static void descarregarRecursos(void) {
 int main(void) {
     srand((unsigned int)time(NULL));
 
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(SCREEN_W, SCREEN_H, "Guardioes do Mangue");
+    MaximizeWindow();
     SetTargetFPS(60);
-    SetExitKey(KEY_NULL);
+    SetExitKey(KEY_ESCAPE);
+
+    /* Canvas virtual fixo em SCREEN_W x SCREEN_H — toda a UI renderiza aqui,
+     * depois escalamos para a janela/monitor mantendo a proporcao. */
+    RenderTexture2D canvas = LoadRenderTexture(SCREEN_W, SCREEN_H);
+    SetTextureFilter(canvas.texture, TEXTURE_FILTER_BILINEAR);
 
     carregarRecursos();
     gameStateInicializar(&game);
     carregarPlacar(&ranking);  /* sem efeito se ranking.dat ainda nao existe */
 
     while (!WindowShouldClose()) {
+        /* F11 alterna fullscreen / janela */
+        if (IsKeyPressed(KEY_F11)) {
+            ToggleFullscreen();
+        }
+
+        /* Estica o canvas para preencher toda a janela/tela */
+        float sw = (float)GetScreenWidth();
+        float sh = (float)GetScreenHeight();
+        Rectangle dst = { 0, 0, sw, sh };
+
+        /* Remapeia o mouse para o espaco do canvas (usado por GetMousePosition) */
+        SetMouseOffset(0, 0);
+        SetMouseScale((float)SCREEN_W / sw, (float)SCREEN_H / sh);
+
         switch (current_screen) {
             case SCREEN_MENU:     MenuUpdate();     break;
             case SCREEN_GAME:     GameUpdate();     break;
@@ -69,7 +90,8 @@ int main(void) {
             case SCREEN_GAMEOVER: GameOverUpdate(); break;
         }
 
-        BeginDrawing();
+        /* Renderiza tudo no canvas virtual */
+        BeginTextureMode(canvas);
         ClearBackground(COR_FUNDO);
 
         switch (current_screen) {
@@ -80,12 +102,20 @@ int main(void) {
             case SCREEN_GAMEOVER: GameOverDraw(); break;
         }
 
+        EndTextureMode();
+
+        /* Exibe canvas escalado, com barras pretas nas bordas se necessario */
+        Rectangle src = { 0, 0, (float)SCREEN_W, -(float)SCREEN_H };
+        BeginDrawing();
+        ClearBackground(BLACK);
+        DrawTexturePro(canvas.texture, src, dst, (Vector2){0, 0}, 0.0f, WHITE);
         EndDrawing();
     }
 
     gameStateLiberar(&game);
     liberarPlacar(&ranking);
     descarregarRecursos();
+    UnloadRenderTexture(canvas);
     CloseWindow();
     return 0;
 }
