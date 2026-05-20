@@ -9,7 +9,6 @@
 #include "../jogo.h"
 #include "../eventos.h"
 
-/* Layout — all positions are derived from these constants. */
 #define MANGUE_W   ((int)(SCREEN_W * 0.7f))
 #define PANEL_X    MANGUE_W
 #define PANEL_W    (SCREEN_W - MANGUE_W)

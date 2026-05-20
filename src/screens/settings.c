@@ -73,7 +73,7 @@ void SettingsDraw(void) {
     y += 34;
     Rectangle field = (Rectangle){ x, y, SCREEN_W - 2 * x, 50 };
     DrawRectangleRounded(field, 0.2f, 8, COR_PAINEL);
-    DrawRectangleRoundedLines(field, 0.2f, 8, 1.5f, COR_ACENTO);
+    DrawRectangleRoundedLines(field, 0.2f, 8, COR_ACENTO);
     gText(player_name, (int)field.x + 14, (int)field.y + 14, 24, COR_TEXTO);
 
     /* Blinking cursor at the end of the buffer */
