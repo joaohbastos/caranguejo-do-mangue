@@ -8,10 +8,6 @@
 #include "ranking.h"
 #include "render_terminal.h"
 
-/* ============================================================
-   I/O helpers
-   ============================================================ */
-
 static void descartarLinha(void) {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {
@@ -26,10 +22,6 @@ static int lerInteiro(int *destino) {
     descartarLinha();
     return 1;
 }
-
-/* ============================================================
-   Colony / ranking display
-   ============================================================ */
 
 void renderExibirColonia(Caranguejo *inicio) {
     if (inicio == NULL) {
@@ -66,11 +58,6 @@ void renderExibirPlacar(Registro *inicio) {
     }
     printf("==================================================\n");
 }
-
-/* ============================================================
-   Event rendering — prompts + result printing.
-   The logic (mutating GameState) lives in eventos.c.
-   ============================================================ */
 
 static void renderEventoMare(GameState *gs) {
     printf("\n[Evento] MARE alta no Capibaribe!\n");
@@ -138,7 +125,6 @@ static void renderEventoNenhum(void) {
     printf("\n[Evento] Mangue calmo. Nada de novo nesta rodada.\n");
 }
 
-/* Dispatches the rendered event. Returns 1 if a Rei was inserted (i.e. id consumed). */
 static int renderAplicarEvento(GameState *gs, TipoEvento evento) {
     switch (evento) {
         case EVENTO_MARE:
@@ -156,10 +142,6 @@ static int renderAplicarEvento(GameState *gs, TipoEvento evento) {
     }
 }
 
-/* ============================================================
-   New crab arrivals — printing wraps the pure inserirNovoCaranguejo.
-   ============================================================ */
-
 static void renderInserirNovosCaranguejos(GameState *gs, int quantos) {
     if (quantos <= 0) {
         return;
@@ -174,10 +156,6 @@ static void renderInserirNovosCaranguejos(GameState *gs, int quantos) {
         printf("  + Caranguejo id=%d entrou.\n", idAlocado);
     }
 }
-
-/* ============================================================
-   Round and partida orchestration
-   ============================================================ */
 
 static void atualizarStatusRei(GameState *gs) {
     Caranguejo *rei = encontrarRei(gs->colonia);

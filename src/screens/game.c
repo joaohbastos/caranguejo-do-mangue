@@ -25,16 +25,14 @@
 #define KING_BONUS_PONTOS 50
 #define PHASE_CARD_SECONDS 2.0f
 
-/* ─── round state machine ───────────────────────────────────────── */
-
 typedef enum {
-    GS_PLAYING,        /* player acts freely */
-    GS_CONFIRM_PASS,   /* "skip with X spots?" */
-    GS_EVENT_MODAL,    /* MARE or SIRI flavor card */
-    GS_KING_OFFER,     /* Caranguejo Rei: aceitar / rejeitar */
-    GS_KING_BONUS,     /* king survived 5 rounds */
-    GS_PHASE_CARD,     /* phase transition card, timed */
-    GS_DYING           /* breve fade dos mortos antes do game over */
+    GS_PLAYING,        
+    GS_CONFIRM_PASS,  
+    GS_EVENT_MODAL,   
+    GS_KING_OFFER,   
+    GS_KING_BONUS,     
+    GS_PHASE_CARD,    
+    GS_DYING         
 } GameSubState;
 
 #define DYING_SECONDS 0.6f
@@ -44,29 +42,23 @@ static TipoEvento   pending_event    = EVENTO_NENHUM;
 static float        phase_card_time  = 0.0f;
 static float        dying_timer      = 0.0f;
 static int          feeding_mode     = 0;
-static int          king_bonus_given = 0;  /* one-shot per king life */
+static int          king_bonus_given = 0;  
 
 static void triggerEndOfRound(void);
 static void resolveAfterEvent(void);
 static void finishRound(void);
 
-/* ─── estado visual (animacoes) ──────────────────────────────────────
- * Estado paralelo a Caranguejo, indexado por id. Mantemos fora da
- * struct Caranguejo para nao quebrar a invariante "lista encadeada
- * identica a versao terminal". Tamanho fixo: colonia raramente passa
- * de 15 caranguejos. */
-
 #define MAX_VISUALS 64
 
 typedef struct {
     int   id;
-    float fome_exibida;   /* tween entre nivelFome real */
+    float fome_exibida;   
 } CrabVisual;
 
 typedef struct {
     int   cx, cy;
     int   ehRei;
-    float alpha;          /* 1.0 -> 0.0 durante fade de morte */
+    float alpha;         
 } Ghost;
 
 static CrabVisual visuals[MAX_VISUALS];
@@ -74,8 +66,6 @@ static int        n_visuals = 0;
 static Ghost      ghosts[MAX_VISUALS];
 static int        n_ghosts  = 0;
 
-/* Retorna a fome exibida atualmente para esse id, criando entrada
- * inicializada com o valor real se for a primeira vez. */
 static float fomeExibida(int id, int fome_real) {
     for (int i = 0; i < n_visuals; i++) {
         if (visuals[i].id == id) return visuals[i].fome_exibida;
@@ -88,7 +78,6 @@ static float fomeExibida(int id, int fome_real) {
     return (float)fome_real;
 }
 
-/* Avanca o tween da fome exibida em direcao a fome real. Chamado por frame. */
 static void tickVisuals(void) {
     float dt = GetFrameTime();
     float fator = dt * 5.0f;  /* ~200ms para alcancar o alvo */
@@ -102,23 +91,20 @@ static void tickVisuals(void) {
                 break;
             }
         }
-        /* Garante que cada caranguejo vivo tem entrada. */
         fomeExibida(c->id, c->nivelFome);
     }
 }
 
-/* Adiciona um fantasma (efeito de fade) em uma posicao especifica. */
 static void addGhost(int cx, int cy, int ehRei) {
     if (n_ghosts >= MAX_VISUALS) return;
     ghosts[n_ghosts++] = (Ghost){ cx, cy, ehRei, 1.0f };
 }
 
-/* Decrementa alpha dos fantasmas e remove os que sumiram. */
 static void tickGhosts(void) {
     float dt = GetFrameTime();
     int write = 0;
     for (int i = 0; i < n_ghosts; i++) {
-        ghosts[i].alpha -= dt / 0.5f;  /* fade em ~500ms */
+        ghosts[i].alpha -= dt / 0.5f; 
         if (ghosts[i].alpha > 0.0f) {
             ghosts[write++] = ghosts[i];
         }
@@ -126,13 +112,10 @@ static void tickGhosts(void) {
     n_ghosts = write;
 }
 
-/* Reseta todo estado visual (chamado em GameEnter). */
 static void resetVisuals(void) {
     n_visuals = 0;
     n_ghosts  = 0;
 }
-
-/* ─── pure helpers ───────────────────────────────────────────────── */
 
 static const char *nomeFase(int faseId) {
     switch (faseId) {
@@ -191,8 +174,6 @@ static const char *eventLine2(TipoEvento e) {
     }
 }
 
-/* ─── drawing primitives ─────────────────────────────────────────── */
-
 static void drawCrown(int cx, int top_y) {
     Color gold = (Color){ 245, 200, 50, 255 };
     int base_w = 26;
@@ -211,15 +192,10 @@ static void drawCrown(int cx, int top_y) {
                  (Vector2){ base_x + base_w - 3, base_y - 8 }, gold);
 }
 
-/* Desenha um caranguejo com sprite (se carregado) ou circulo (fallback).
- * A barra de fome usa o valor tweenado em vez do nivelFome cru, dando
- * uma reducao suave quando o jogador alimenta. */
 static void drawCrab(Caranguejo *c, int cx, int cy) {
     Vector2 m   = GetMousePosition();
-    int hovered = (sub_state == GS_PLAYING) && feeding_mode &&
-                  CheckCollisionPointCircle(m, (Vector2){cx, cy}, CRAB_RADIUS);
+    int hovered = (sub_state == GS_PLAYING) && feeding_mode && CheckCollisionPointCircle(m, (Vector2){cx, cy}, CRAB_RADIUS);
 
-    /* Barra de fome animada acima do sprite. */
     float fome_show = fomeExibida(c->id, c->nivelFome);
     int bar_x = cx - CRAB_BAR_W / 2;
     int bar_y = cy - CRAB_RADIUS - 18;
@@ -229,10 +205,8 @@ static void drawCrab(Caranguejo *c, int cx, int cy) {
                   corFome((int)(fome_show + 0.5f), MAX_FOME));
     DrawRectangleLines(bar_x, bar_y, CRAB_BAR_W, CRAB_BAR_H, COR_TEXTO);
 
-    /* Aro de hover quando em modo alimentar. */
     if (hovered) DrawCircle(cx, cy, CRAB_RADIUS + 6, COR_PRIMARIA);
 
-    /* Sprite quando disponivel, senao circulo + (coroa, se rei). */
     Texture2D tex = c->ehRei ? tex_crab_king : tex_crab;
     if (tex.id > 0) {
         DrawTexture(tex, cx - tex.width / 2, cy - tex.height / 2, WHITE);
@@ -243,14 +217,12 @@ static void drawCrab(Caranguejo *c, int cx, int cy) {
         if (c->ehRei) drawCrown(cx, bar_y - 2);
     }
 
-    /* Identificador para depuracao + clareza visual. */
     char id_buf[12];
     snprintf(id_buf, sizeof(id_buf), "#%d", c->id);
     int tw = gMeasure(id_buf, 20);
     gText(id_buf, cx - tw / 2, cy + CRAB_RADIUS + 4, 20, COR_TEXTO);
 }
 
-/* Desenha os fantasmas (caranguejos mortos, em fade-out). */
 static void drawGhosts(void) {
     for (int i = 0; i < n_ghosts; i++) {
         unsigned char a = (unsigned char)(ghosts[i].alpha * 255.0f);
@@ -268,8 +240,6 @@ static void drawGhosts(void) {
     }
 }
 
-/* Renderiza a area do mangue: fundo (sprite ou cor solida), colonia
- * viva (sprites/circulos) e fantasmas em fade-out. */
 static void drawMangroveArea(void) {
     if (tex_mangue_bg.id > 0) {
         DrawTexturePro(tex_mangue_bg,
@@ -298,8 +268,6 @@ static void drawMangroveArea(void) {
     }
 }
 
-/* Disabled-aware button. Renders dimmed and ignores clicks when !enabled.
- * Also swallows clicks while a modal/transition is on top. */
 static int actionButton(Rectangle r, const char *text, int enabled,
                         Color base, Color hover) {
     if (!enabled) {
@@ -508,11 +476,6 @@ static void resolveAfterEvent(void) {
     finishRound();
 }
 
-/* Finaliza a rodada: snapshot dos caranguejos prestes a morrer (para
- * o fade visual), verificarMortes (se houver morte -> game over),
- * insercao de novos caranguejos conforme a fase, incremento de
- * rodadasNaColonia, ressincronizacao do estado do Rei, incremento
- * de rodada/pontuacao, e ordenacao final por fome. */
 static void finishRound(void) {
     int slot = 0;
     for (Caranguejo *c = game.colonia; c != NULL; c = c->proximo) {

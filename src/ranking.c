@@ -53,7 +53,6 @@ int salvarPlacar(Registro *inicio) {
     if (f == NULL) {
         return 0;
     }
-    /* Format: "nome;pontuacao" — name first because the GUI table reads it that way. */
     for (Registro *r = inicio; r != NULL; r = r->proximo) {
         fprintf(f, "%s;%d\n", r->nome, r->pontuacao);
     }
@@ -70,8 +69,6 @@ int carregarPlacar(Registro **inicio) {
         return 0;
     }
 
-    /* Parse "nome;pontuacao" — split on the last ';' so names with semicolons
-     * (unlikely but defensive) still parse the trailing score. */
     char linha[128];
     while (fgets(linha, sizeof(linha), f) != NULL) {
         char *sep = strrchr(linha, ';');

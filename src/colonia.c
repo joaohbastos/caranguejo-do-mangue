@@ -96,10 +96,6 @@ int verificarMortes(Caranguejo **inicio) {
     return mortos;
 }
 
-/* Insertion Sort sobre a lista encadeada.
-   Cada no e retirado da lista original e inserido na posicao correta
-   de uma lista 'ordenada' que cresce um elemento por vez.
-   Criterio: nivelFome decrescente (mais faminto primeiro). */
 void ordenarPorFome(Caranguejo **inicio) {
     if (inicio == NULL || *inicio == NULL || (*inicio)->proximo == NULL) {
         return;
@@ -113,7 +109,7 @@ void ordenarPorFome(Caranguejo **inicio) {
 
         if (ordenada == NULL || ordenada->nivelFome < atual->nivelFome) {
             atual->proximo = ordenada;
-            ordenada       = atual;
+            ordenada = atual;
         } else {
             Caranguejo *busca = ordenada;
             while (busca->proximo != NULL &&
