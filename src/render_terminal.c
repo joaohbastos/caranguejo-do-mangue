@@ -1,18 +1,3 @@
-static void renderInserirNovosCaranguejos(GameState *gs, int quantos) {
-    if (quantos <= 0) {
-        return;
-    }
-    printf("\nChegam %d novo(s) caranguejo(s) ao mangue:\n", quantos);
-    for (int i = 0; i < quantos; i++) {
-        int idAlocado = 0;
-        if (!inserirNovoCaranguejo(gs, &idAlocado)) {
-            printf("  Falha ao alocar novo caranguejo.\n");
-            return;
-        }
-        printf("  + Caranguejo id=%d entrou.\n", idAlocado);
-    }
-}
-
 static void atualizarStatusRei(GameState *gs) {
     Caranguejo *rei = encontrarRei(gs->colonia);
     if (rei != NULL) {
