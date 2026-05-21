@@ -98,36 +98,3 @@ static void lerNomeJogador(char *destino, size_t tamanho) {
     }
 }
 
-static void iniciarPartida(Registro **ranking) {
-    GameState gs;
-    gameStateInicializar(&gs);
-
-    for (int i = 1; i <= CARANGUEJOS_INICIAIS; i++) {
-        Caranguejo *novo = criarCaranguejo(i, 0);
-        if (novo == NULL) {
-            printf("\nFalha ao alocar colonia inicial.\n");
-            gameStateLiberar(&gs);
-            return;
-        }
-        novo->nivelFome = i;
-        inserirCaranguejo(&gs.colonia, novo);
-    }
-
-    printf("\n[Jogar] Partida iniciada com %d caranguejos.\n",
-           CARANGUEJOS_INICIAIS);
-
-    int pontuacao = jogarPartidaTerminal(&gs);
-    gameStateLiberar(&gs);
-
-    char nome[50];
-    printf("\nPartida encerrada. Sua pontuacao: %d rodada(s) sobrevivida(s).\n",
-           pontuacao);
-    printf("Digite seu nome para o ranking: ");
-    lerNomeJogador(nome, sizeof(nome));
-
-    registrarPlacar(ranking, nome, pontuacao);
-    ordenarPlacar(ranking);
-    renderExibirPlacar(*ranking);
-    salvarPlacar(*ranking);
-    printf("\n");
-}
