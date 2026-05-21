@@ -17,11 +17,9 @@ A fome aumenta a cada turno, eventos inesperados surgem ao longo do caminho — 
 ### Compilação
 
 ```bash
-# Clonar o repositório
 git clone https://github.com/joaohbastos/caranguejo-do-mangue.git
 cd caranguejo-do-mangue
 
-# Compilar (versão com interface gráfica)
 make gui
 ```
 
@@ -64,9 +62,9 @@ Estrutura central do jogo. Cada nó representa um caranguejo vivo:
 ```c
 typedef struct Caranguejo {
     int id;
-    int nivelFome;          // 0 = saciado; MAX_FOME = morte
+    int nivelFome;          
     int rodadasNaColonia;
-    int ehRei;              // 1 = Caranguejo Rei
+    int ehRei;             
     struct Caranguejo *proximo;
 } Caranguejo;
 ```
@@ -86,9 +84,9 @@ Utilizado em dois contextos:
 ## ⚙️ Comandos do Makefile
 
 ```bash
-make gui      # Compila a versão com interface gráfica
-make terminal # Compila a versão terminal
-make clean    # Remove os arquivos compilados
+make gui     
+make terminal
+make clean    
 ```
 
 ---
