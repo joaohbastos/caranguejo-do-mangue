@@ -1,151 +1,120 @@
-# Guardiões do Mangue
+# 🦀 Guardiões do Mangue
 
-Jogo de gerenciamento estratégico inspirado no ecossistema do Rio Capibaribe e
-na cultura recifense, desenvolvido em **linguagem C** com **Raylib** para a
-disciplina de Algoritmos e Estruturas de Dados — UFPE 2026.1.
+Jogo de gerenciamento estratégico de colônia de caranguejos, inspirado nos manguezais do Rio Capibaribe — desenvolvido em linguagem C para a disciplina de Algoritmos e Estruturas de Dados (AED 2026.1 — MOD 02), dentro da temática **"Na Vibe do Recife"**.
 
-## Sobre o Jogo
+---
 
-No coração do Recife, o Rio Capibaribe abraça um dos manguezais mais
-importantes do Nordeste. O jogador assume o papel de guardião de uma colônia
-de caranguejos-uçá, decidindo quais serão alimentados a cada rodada com spots
-limitados. A fome aumenta a cada turno, eventos inesperados do mangue surgem
-ao longo do caminho e o Caranguejo Rei pode aparecer a qualquer momento — cabe
-ao jogador manter todos vivos pelo maior número de rodadas possível.
+## 📖 Sobre o Jogo
 
-A colônia é uma **lista encadeada simples** reordenada a cada rodada por
-**Insertion Sort** (mais faminto primeiro). O ranking de recordes é uma
-segunda lista encadeada, também ordenada por Insertion Sort, persistida em
-disco entre sessões.
+No coração do Recife, o Rio Capibaribe abraça um dos manguezais mais importantes do Nordeste. O jogador assume o papel de **guardião de uma colônia de caranguejos**, decidindo quais serão alimentados a cada rodada com spots limitados.
 
-## Como Compilar e Executar
+A fome aumenta a cada turno, eventos inesperados surgem ao longo do caminho — como a Maré Cheia e o Siri Invasor — e o temido **Caranguejo Rei** pode aparecer a qualquer momento. Cabe ao jogador manter todos os caranguejos vivos pelo maior número de rodadas possível. O mangue não perdoa descuido.
 
-### Pré-requisitos
+---
 
-#### Ubuntu / WSL2
+## 🎮 Como Jogar
+
+### Compilação
 
 ```bash
-sudo apt update
-sudo apt install build-essential libraylib-dev
-```
+# Clonar o repositório
+git clone https://github.com/joaohbastos/caranguejo-do-mangue.git
+cd caranguejo-do-mangue
 
-Se a distribuição não tiver `libraylib-dev`, compile a partir do fonte:
-
-```bash
-git clone https://github.com/raysan5/raylib.git
-cd raylib/src
-make PLATFORM=PLATFORM_DESKTOP
-sudo make install
-```
-
-#### Windows (MinGW-w64)
-
-1. Instale MSYS2 (https://www.msys2.org/)
-2. No terminal MinGW64:
-
-```bash
-pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-raylib make
-```
-
-#### macOS
-
-```bash
-brew install raylib
-```
-
-### Build
-
-Existem dois targets independentes:
-
-```bash
-# Versao GUI (Raylib) — o entregavel principal
+# Compilar (versão com interface gráfica)
 make gui
-./caranguejo_gui          # Linux/macOS
-./caranguejo_gui.exe      # Windows
 ```
+
+> **Pré-requisitos:** GCC, Make e Raylib instalados.  
+> Em sistemas Debian/Ubuntu: `sudo apt install build-essential libraylib-dev`
+
+### Execução
 
 ```bash
-# Versao terminal (texto puro) — referencia de logica
-make terminal
-./caranguejo
+./caranguejo_gui
 ```
 
-Para limpar artefatos:
+### Dinâmica de uma partida
 
-```bash
-make clean
-```
+1. Informe seu nome para o ranking
+2. A cada rodada, visualize a colônia **ordenada por nível de fome** (mais faminto primeiro)
+3. Escolha quais caranguejos alimentar dentro do limite de **spots disponíveis**
+4. Resolva o **evento do mangue** da rodada (Maré, Siri Invasor, Caranguejo Rei...)
+5. A fome de todos os caranguejos aumenta ao fim da rodada
+6. O jogo termina quando qualquer caranguejo morre de fome
+7. Sua pontuação é registrada no **ranking de recordes**
 
-> Os flags de link em `Makefile` estão configurados para MinGW (Windows).
-> Para Linux, troque `GUI_LDFLAGS` para
-> `-lraylib -lm -lpthread -ldl -lrt -lX11`.
-> Para macOS, use
-> `-lraylib -lm -framework CoreVideo -framework IOKit -framework Cocoa -framework OpenGL`.
+### Fases da partida
 
-## Controles
+| Fase | Rodadas | Descrição |
+|---|---|---|
+| 🌊 Maré Baixa | 1 – 5 | Introdução calma; fome cresce devagar |
+| 🌊🌊 Maré Cheia | 6 – 10 | Pressão aumenta; mais eventos e caranguejos novos |
+| ⛈️ Tempestade no Capibaribe | 11+ | Caos total; evento toda rodada; sobrevivência pura |
 
-| Onde         | Ação                                                    |
-|--------------|---------------------------------------------------------|
-| Menu         | Mouse — clique em JOGAR / EDITAR / SOBRE                |
-| Editar       | Teclado preenche o nome; BACKSPACE apaga                |
-| Jogo         | "Alimentar" → clicar em um caranguejo gasta 1 spot      |
-| Jogo         | "Limpar Mangue" → −3 poluição, gasta 1 spot             |
-| Jogo         | "Caçar Siri" → só ativo durante ameaça, gasta 1 spot    |
-| Jogo         | "PASSAR RODADA" → encerra a rodada (confirm se spots>0) |
-| Em qualquer  | `ESC` cancela modo alimentar e fecha confirmações       |
+---
 
-## Estrutura do Projeto
-
-```
+## 🗂️ Estrutura do Projeto
 caranguejo-do-mangue/
-├── Makefile                       # build terminal + gui
-├── README.md
-├── ranking.dat                    # gerado em runtime (top 10)
-├── assets/
-│   ├── sprites/                   # crab.png, crab_king.png, mangue_bg.png
-│   └── fonts/                     # PressStart2P-Regular.ttf (opcional)
-└── src/
-    ├── main.c                     # entry point do terminal
-    ├── main_gui.c                 # entry point do GUI (Raylib)
-    ├── colonia.{c,h}              # lista da colonia + ordenarPorFome (Insertion Sort)
-    ├── ranking.{c,h}              # lista do ranking  + ordenarPlacar  (Insertion Sort)
-    ├── jogo.{c,h}                 # logica de rodada e fases
-    ├── eventos.{c,h}              # Mare / Siri / Caranguejo Rei
-    ├── game_state.{c,h}           # struct GameState
-    ├── render_terminal.{c,h}      # renderer texto
-    └── screens/                   # camada de UI Raylib
-        ├── screen.{c,h}           # state machine + helpers de UI
-        ├── theme.h                # paleta de cores
-        ├── menu.c
-        ├── about.c
-        ├── settings.c
-        ├── game.c                 # tela de jogo (Raylib)
-        └── gameover.c             # ranking + replay
+├── src/
+│   ├── main.c              # Ponto de entrada (versão terminal)
+│   ├── colonia.c / .h      # Lista encadeada da colônia + Insertion Sort
+│   ├── eventos.c / .h      # Sorteio e aplicação de eventos do mangue
+│   ├── game_state.c / .h   # Estado global da partida (fase, pontuação, etc.)
+│   ├── jogo.c / .h         # Loop principal do jogo
+│   ├── ranking.c / .h      # Lista encadeada do ranking + Insertion Sort
+│   └── render_terminal.c   # Exibição em terminal
+├── Makefile
+└── README.md
+
+---
+
+## 🧱 Estruturas de Dados e Algoritmos
+
+### Lista Encadeada Simples — Colônia
+
+Estrutura central do jogo. Cada nó representa um caranguejo vivo:
+
+```c
+typedef struct Caranguejo {
+    int id;
+    int nivelFome;          // 0 = saciado; MAX_FOME = morte
+    int rodadasNaColonia;
+    int ehRei;              // 1 = Caranguejo Rei
+    struct Caranguejo *proximo;
+} Caranguejo;
 ```
 
-## Estrutura de Dados — onde estão
+### Lista Encadeada Simples — Ranking
 
-Para o requisito mínimo (lista encadeada + Insertion Sort em posição central):
+Armazena os recordes (nome do jogador + pontuação). Reordenada após cada partida.
 
-- **Lista encadeada da colônia** — `src/colonia.h` (struct `Caranguejo`),
-  implementação em `src/colonia.c`.
-- **Insertion Sort por fome** — `src/colonia.c:103` `ordenarPorFome()`.
-- **Lista encadeada do ranking** — `src/ranking.h` (struct `Registro`),
-  implementação em `src/ranking.c`.
-- **Insertion Sort por pontuação** — `src/ranking.c:23` `ordenarPlacar()`.
+### Insertion Sort
 
-Onze funções totais operam sobre essas listas — ver tabela em `CLAUDE.md`.
+Utilizado em dois contextos:
+- **Durante o jogo:** ordena a colônia por nível de fome ao fim de cada rodada (mais faminto primeiro)
+- **Ao final da partida:** ordena o ranking por pontuação (maior primeiro)
 
-## Screenshot
+---
 
-> _Adicionar screenshot do gameplay aqui antes da entrega final._
+## ⚙️ Comandos do Makefile
 
-## Equipe
+```bash
+make gui      # Compila a versão com interface gráfica
+make terminal # Compila a versão terminal
+make clean    # Remove os arquivos compilados
+```
 
-- Arthur Sindeaux
-- Arthur Oliveira
-- Lucas Pinto
-- João Bastos
+---
 
-Desenvolvido para a disciplina de Algoritmos e Estruturas de Dados —
-UFPE 2026.1, MOD 02 — Atividade Prática.
+## 👥 Equipe
+
+| Nome |
+|---|
+| Arthur Sindeaux |
+| Arthur Oliveira |
+| Lucas Pinto |
+| João Bastos |
+
+Desenvolvido para a disciplina de **Algoritmos e Estruturas de Dados — AED 2026.1**  
+Universidade — MOD 02 | Temática: *Na Vibe do Recife* 🦀
