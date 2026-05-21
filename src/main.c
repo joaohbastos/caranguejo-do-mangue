@@ -84,17 +84,5 @@ static void descartarLinha(void) {
     }
 }
 
-static void lerNomeJogador(char *destino, size_t tamanho) {
-    if (fgets(destino, (int)tamanho, stdin) == NULL) {
-        destino[0] = '\0';
-    }
-    size_t len = strlen(destino);
-    while (len > 0 && (destino[len - 1] == '\n' || destino[len - 1] == '\r')) {
-        destino[--len] = '\0';
-    }
-    if (destino[0] == '\0') {
-        strncpy(destino, "Anonimo", tamanho - 1);
-        destino[tamanho - 1] = '\0';
-    }
-}
+
 
