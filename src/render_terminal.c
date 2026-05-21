@@ -1,31 +1,3 @@
-static void renderEventoSiri(GameState *gs) {
-    printf("\n[Evento] SIRI INVASOR aparece no mangue!\n");
-    printf("  1. Cacar (gasta 1 spot extra desta rodada)\n");
-    printf("  2. Ignorar (2 caranguejos aleatorios ganham +2 de fome)\n");
-    printf("Escolha: ");
-
-    int escolha = 0;
-    if (!lerInteiro(&escolha)) {
-        escolha = 2;
-        printf("Entrada invalida. Assumindo Ignorar.\n");
-    }
-
-    if (escolha == 1) {
-        printf("Voce cacou o siri. A colonia segue em paz.\n");
-        return;
-    }
-
-    if (gs->colonia == NULL) {
-        printf("Nao ha caranguejos para sofrer com o siri.\n");
-        return;
-    }
-
-    SiriResultado res = aplicarSiriIgnorado(gs);
-    for (int i = 0; i < res.n; i++) {
-        printf("  -> Caranguejo id=%d ganhou +2 de fome.\n", res.ids[i]);
-    }
-}
-
 static int renderEventoRei(GameState *gs) {
     printf("\n[Evento] CARANGUEJO REI aparece no mangue!\n");
     printf("  1. Aceitar (entra na colonia, fome cresce 2x mais rapido;\n");
