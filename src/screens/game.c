@@ -283,8 +283,6 @@ static int actionButton(Rectangle r, const char *text, int enabled,
     return clicked && (sub_state == GS_PLAYING);
 }
 
-/* ─── modal renderers ────────────────────────────────────────────── */
-
 static Rectangle dialogBox(int w, int h) {
     return (Rectangle){ SCREEN_W / 2 - w / 2, SCREEN_H / 2 - h / 2, w, h };
 }
@@ -516,8 +514,6 @@ static void finishRound(void) {
     }
 }
 
-/* ─── input handlers (only while GS_PLAYING) ─────────────────────── */
-
 static void clickFeedTarget(void) {
     if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) return;
     Vector2 m = GetMousePosition();
@@ -537,8 +533,6 @@ static void clickFeedTarget(void) {
     }
     feeding_mode = 0;
 }
-
-/* ─── info panel ─────────────────────────────────────────────────── */
 
 static void drawInfoPanel(void) {
     DrawRectangle(PANEL_X, 0, PANEL_W, SCREEN_H, COR_PAINEL);
@@ -626,8 +620,6 @@ static void drawInfoPanel(void) {
         else            triggerEndOfRound();
     }
 }
-
-/* ─── lifecycle ──────────────────────────────────────────────────── */
 
 void GameEnter(void) {
     gameStateLiberar(&game);
