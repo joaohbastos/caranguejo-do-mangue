@@ -1,20 +1,3 @@
-
-
-static void descartarLinha(void) {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF) {
-    }
-}
-
-static int lerInteiro(int *destino) {
-    if (scanf("%d", destino) != 1) {
-        descartarLinha();
-        return 0;
-    }
-    descartarLinha();
-    return 1;
-}
-
 void renderExibirColonia(Caranguejo *inicio) {
     if (inicio == NULL) {
         printf("  (Colonia vazia)\n");
