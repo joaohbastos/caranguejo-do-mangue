@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-#include "colonia.h"
-#include "eventos.h"
-#include "game_state.h"
-#include "jogo.h"
-#include "ranking.h"
-#include "render_terminal.h"
 
 static void descartarLinha(void) {
     int c;
