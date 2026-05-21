@@ -78,11 +78,4 @@ static int lerOpcao(void) {
     return op;
 }
 
-static void descartarLinha(void) {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF) {
-    }
-}
-
-
 
