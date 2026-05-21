@@ -80,7 +80,7 @@ static float fomeExibida(int id, int fome_real) {
 
 static void tickVisuals(void) {
     float dt = GetFrameTime();
-    float fator = dt * 5.0f;  /* ~200ms para alcancar o alvo */
+    float fator = dt * 5.0f;  
     if (fator > 1.0f) fator = 1.0f;
 
     for (Caranguejo *c = game.colonia; c != NULL; c = c->proximo) {
@@ -419,24 +419,17 @@ static void drawPhaseCard(void) {
 
 /* ─── round flow ─────────────────────────────────────────────────── */
 
-/* Inicia o fim da rodada: aplica a ameaca de siri da rodada anterior,
- * aumenta a fome conforme a fase, e sorteia um evento. Se um evento
- * dispara, abre o modal correspondente e pausa o fluxo; caso contrario
- * segue direto para resolveAfterEvent(). */
 static void triggerEndOfRound(void) {
-    /* 1. Last round's Siri threat, if not hunted, lands now. */
     if (game.siriAtivo) {
         aplicarSiriIgnorado(&game);
         game.siriAtivo = 0;
         ordenarPorFome(&game.colonia);
     }
 
-    /* 2. Apply phase hunger (king takes 2x via aplicarFomeRodada). */
     ParametrosFase fase = aplicarFaseAtual(game.rodadaAtual);
     aplicarFomeRodada(&game, fase.incrementoFome);
     ordenarPorFome(&game.colonia);
 
-    /* 3. Roll an event by the phase's chance. */
     if ((rand() % 100) < fase.chanceEvento) {
         pending_event = sortearEvento();
         sub_state = (pending_event == EVENTO_REI) ? GS_KING_OFFER : GS_EVENT_MODAL;
@@ -446,9 +439,6 @@ static void triggerEndOfRound(void) {
     resolveAfterEvent();
 }
 
-/* Aplica o efeito do evento (depois que o jogador fechou o modal) e
- * verifica o bonus do Rei. Se o bonus dispara, mostra o modal e pausa;
- * caso contrario chama finishRound(). */
 static void resolveAfterEvent(void) {
     switch (pending_event) {
         case EVENTO_MARE:
@@ -463,7 +453,6 @@ static void resolveAfterEvent(void) {
     }
     pending_event = EVENTO_NENHUM;
 
-    /* King bonus check — one-shot per king life, like the terminal version. */
     if (game.reiAtivo && !king_bonus_given &&
         game.reiRodadasVivo >= REI_RODADAS_PARA_BONUS) {
         aplicarBonusRei(&game);
@@ -489,7 +478,6 @@ static void finishRound(void) {
 
     int mortos = verificarMortes(&game.colonia);
     if (mortos > 0) {
-        /* Pausa breve para o fade dos fantasmas tocar antes da troca de tela. */
         dying_timer = DYING_SECONDS;
         sub_state   = GS_DYING;
         return;
@@ -584,7 +572,6 @@ static void drawInfoPanel(void) {
     snprintf(buf, sizeof(buf), "Streak: %d", game.streak);
     gText(buf, x, y, 20, COR_TEXTO); y += line_h + 6;
 
-    /* Threat + king status — visually distinct so they pop out. */
     if (game.siriAtivo) {
         gText("! Siri pendente", x, y, 20, COR_PERIGO);
         y += line_h;
@@ -601,7 +588,6 @@ static void drawInfoPanel(void) {
         }
     }
 
-    /* Action stack pinned to the bottom of the panel. */
     int btn_w = PANEL_W - 2 * PANEL_PAD;
     int btn_h = 46;
     int gap   = 10;
@@ -632,7 +618,6 @@ static void drawInfoPanel(void) {
         feeding_mode = 0;
     }
 
-    /* Passar Rodada: free click when spots=0, confirm overlay when spots>0. */
     Color pass_base  = spots_left ? COR_PAINEL_HOVER : COR_PRIMARIA;
     Color pass_hover = spots_left ? COR_ACENTO_HOVER : COR_PRIMARIA_HOVER;
     int pass_clicked = Button(r_pass, "PASSAR RODADA", pass_base, pass_hover, COR_TEXTO);
@@ -644,9 +629,6 @@ static void drawInfoPanel(void) {
 
 /* ─── lifecycle ──────────────────────────────────────────────────── */
 
-/* Hook chamado por NextScreen(SCREEN_GAME): reseta GameState, cria
- * 4 caranguejos iniciais via criarCaranguejo + inserirCaranguejo e
- * zera todas as flags da maquina de estados visuais e de rodada. */
 void GameEnter(void) {
     gameStateLiberar(&game);
     gameStateInicializar(&game);
@@ -676,17 +658,12 @@ void GameEnter(void) {
     resetVisuals();
 }
 
-/* Loop de input do jogo: ESC cancela modo alimentar / fecha confirm,
- * animacoes avancam todo frame (independente de modal), phase card
- * tem timer proprio, e cliques em caranguejo so contam em modo alimentar. */
 void GameUpdate(void) {
     if (IsKeyPressed(KEY_ESCAPE)) {
         feeding_mode = 0;
         if (sub_state == GS_CONFIRM_PASS) sub_state = GS_PLAYING;
     }
 
-    /* Animacoes rodam sempre, mesmo sob modal ou phase card, para que
-     * o fade dos mortos termine e a barra de fome alcance o alvo. */
     tickVisuals();
     tickGhosts();
 
@@ -707,8 +684,6 @@ void GameUpdate(void) {
     }
 }
 
-/* Render do jogo: area do mangue (fundo + colonia + fantasmas),
- * painel direito (info + acoes), e qualquer modal/transicao por cima. */
 void GameDraw(void) {
     drawMangroveArea();
     drawInfoPanel();

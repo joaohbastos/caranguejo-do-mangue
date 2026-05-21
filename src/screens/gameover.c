@@ -7,31 +7,22 @@
 #include "../game_state.h"
 #include "../ranking.h"
 
-/* Pointer to the player's just-inserted record so we can highlight it.
- * registrarPlacar inserts at head, so we capture the head right after the
- * call; sort/persist may move it within the list but the node address holds. */
 static Registro *just_inserted = NULL;
 
-/* Hook chamado por NextScreen(SCREEN_GAMEOVER): registra a pontuacao
- * final, ordena o ranking via Insertion Sort (ordenarPlacar) e
- * persiste em disco. Guarda o ponteiro do registro inserido para
- * que GameOverDraw possa destacar a linha do jogador. */
 void GameOverEnter(void) {
     just_inserted = NULL;
 
     const char *name = (player_name[0] != '\0') ? player_name : "Guardiao";
     if (registrarPlacar(&ranking, name, game.pontuacao)) {
-        just_inserted = ranking;          /* head insert → new node is here */
-        ordenarPlacar(&ranking);          /* Insertion Sort (ranking.c) */
-        salvarPlacar(ranking);            /* writes ranking.dat */
+        just_inserted = ranking;         
+        ordenarPlacar(&ranking);          
+        salvarPlacar(ranking);            
     }
 }
 
-/* Tela de Game Over — sem logica por frame. */
+
 void GameOverUpdate(void) { }
 
-/* Renderiza uma linha da tabela do ranking. Se highlight=1, desenha
- * um retangulo laranja por tras para destacar a corrida atual do jogador. */
 static void drawRankingRow(int pos, Registro *r, int x, int y, int width, int highlight) {
     int row_h = 28;
     if (highlight) {
@@ -50,9 +41,6 @@ static void drawRankingRow(int pos, Registro *r, int x, int y, int width, int hi
     gText(pts_buf, x + width - pts_w, y, 20, COR_TEXTO);
 }
 
-/* Desenha cabecalho "GAME OVER", pontuacao final, tabela top 10 do
- * ranking (com destaque para a corrida atual se estiver no top 10)
- * e os botoes "Jogar novamente" / "Menu principal". */
 void GameOverDraw(void) {
     const char *title = "GAME OVER";
     int title_size = 56;
@@ -64,7 +52,6 @@ void GameOverDraw(void) {
     int sw = gMeasure(score_buf, 28);
     gText(score_buf, (SCREEN_W - sw) / 2, 100, 28, COR_TEXTO);
 
-    /* Ranking table */
     int table_w = 520;
     int table_x = (SCREEN_W - table_w) / 2;
     int table_y = 160;
@@ -92,7 +79,6 @@ void GameOverDraw(void) {
         gText(empty, (SCREEN_W - ew) / 2, table_y + 10, 18, COR_TEXTO);
     }
 
-    /* Buttons pinned to bottom */
     int btn_w = 220;
     int btn_h = 56;
     int gap   = 24;
@@ -104,7 +90,7 @@ void GameOverDraw(void) {
     Rectangle r_menu  = (Rectangle){ bx + btn_w + gap,    by, btn_w, btn_h };
 
     if (Button(r_again, "Jogar novamente", COR_PRIMARIA, COR_PRIMARIA_HOVER, COR_TEXTO)) {
-        NextScreen(SCREEN_GAME);   /* GameEnter resets state + colony */
+        NextScreen(SCREEN_GAME); 
     }
     if (Button(r_menu, "Menu principal", COR_PAINEL_HOVER, COR_ACENTO_HOVER, COR_TEXTO)) {
         NextScreen(SCREEN_MENU);

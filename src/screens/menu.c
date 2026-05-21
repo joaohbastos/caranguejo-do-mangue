@@ -2,13 +2,8 @@
 #include "screen.h"
 #include "theme.h"
 
-/* Atualizacao do menu principal — nada a fazer por frame; o tratamento
- * de clique mora em MenuDraw porque o helper Button() faz render e
- * hit-test no mesmo passo. */
 void MenuUpdate(void) { }
 
-/* Desenha titulo, subtitulo e tres botoes verticais (JOGAR, EDITAR, SOBRE).
- * Cada botao dispara NextScreen() ao ser clicado. */
 void MenuDraw(void) {
     const char *title    = "GUARDIOES DO MANGUE";
     const char *subtitle = "Colonia de caranguejos no Capibaribe";
@@ -21,7 +16,6 @@ void MenuDraw(void) {
     gText(title,    (SCREEN_W - tw) / 2, 90,  title_size, COR_PRIMARIA);
     gText(subtitle, (SCREEN_W - sw) / 2, 160, sub_size,   COR_TEXTO);
 
-    /* Three buttons centered vertically around y = SCREEN_H / 2. */
     int btn_w = 260;
     int btn_h = 60;
     int gap   = 24;

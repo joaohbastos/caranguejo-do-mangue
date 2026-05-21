@@ -8,9 +8,6 @@
 
 static int confirm_open = 0;
 
-/* Atualiza o buffer do nome do jogador a partir do teclado.
- * Usa GetCharPressed (pulso por caractere, sem IME) e KEY_BACKSPACE
- * para deletar. Mantemos buffer fixo de tamanho PLAYER_NAME_MAX. */
 void SettingsUpdate(void) {
     int ch = GetCharPressed();
     while (ch > 0) {
