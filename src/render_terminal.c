@@ -1,23 +1,3 @@
-void renderExibirPlacar(Registro *inicio) {
-    printf("\n================ TOP %d - RANKING ================\n", TOP_PLACAR);
-    if (inicio == NULL) {
-        printf("  (ranking vazio)\n");
-        printf("==================================================\n");
-        return;
-    }
-    int pos = 1;
-    for (Registro *r = inicio; r != NULL && pos <= TOP_PLACAR; r = r->proximo, pos++) {
-        printf("  %2d. %-40s %5d\n", pos, r->nome, r->pontuacao);
-    }
-    printf("==================================================\n");
-}
-
-static void renderEventoMare(GameState *gs) {
-    printf("\n[Evento] MARE alta no Capibaribe!\n");
-    printf("As aguas sobem e a fome de todos sobe junto.\n");
-    aplicarMare(gs);
-}
-
 static void renderEventoSiri(GameState *gs) {
     printf("\n[Evento] SIRI INVASOR aparece no mangue!\n");
     printf("  1. Cacar (gasta 1 spot extra desta rodada)\n");
