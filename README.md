@@ -52,20 +52,6 @@ make gui
 | 🌊🌊 Maré Cheia | 6 – 10 | Pressão aumenta; mais eventos e caranguejos novos |
 | ⛈️ Tempestade no Capibaribe | 11+ | Caos total; evento toda rodada; sobrevivência pura |
 
----
-
-## 🗂️ Estrutura do Projeto
-caranguejo-do-mangue/
-├── src/
-│   ├── main.c              # Ponto de entrada (versão terminal)
-│   ├── colonia.c / .h      # Lista encadeada da colônia + Insertion Sort
-│   ├── eventos.c / .h      # Sorteio e aplicação de eventos do mangue
-│   ├── game_state.c / .h   # Estado global da partida (fase, pontuação, etc.)
-│   ├── jogo.c / .h         # Loop principal do jogo
-│   ├── ranking.c / .h      # Lista encadeada do ranking + Insertion Sort
-│   └── render_terminal.c   # Exibição em terminal
-├── Makefile
-└── README.md
 
 ---
 
