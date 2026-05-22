@@ -81,9 +81,6 @@ void SettingsDraw(void) {
     if (Button(r_fs, fs_label, COR_PAINEL, COR_PAINEL_HOVER, COR_TEXTO)) {
         ToggleFullscreen();
     }
-    gText("(ou F11)", (int)r_fs.x + (int)r_fs.width + 16,
-             (int)r_fs.y + 16, 16, COR_TEXTO);
-    y += 80;
 
     Rectangle r_reset = (Rectangle){ x, y, 280, 50 };
     if (Button(r_reset, "Resetar ranking", COR_PERIGO, COR_PERIGO_HOVER, COR_TEXTO)) {
