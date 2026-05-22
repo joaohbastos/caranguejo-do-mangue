@@ -73,7 +73,6 @@ void SettingsDraw(void) {
     }
     y += 70;
 
-    /* Fullscreen toggle */
     gText("Tela cheia", x, y, 22, COR_ACENTO);
     y += 34;
     const char *fs_label = IsWindowFullscreen() ? "Tela Cheia: ON" : "Tela Cheia: OFF";
