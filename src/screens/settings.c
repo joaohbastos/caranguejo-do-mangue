@@ -73,19 +73,6 @@ void SettingsDraw(void) {
     }
     y += 70;
 
-    gText("Modo de jogo", x, y, 22, COR_ACENTO);
-    y += 34;
-    const char *mode_label = (modo_jogo == MODO_CASUAL)
-        ? "Modo: Casual"
-        : "Modo: Mangue (timer)";
-    Rectangle r_mode = (Rectangle){ x, y, 360, 50 };
-    if (Button(r_mode, mode_label, COR_PAINEL, COR_PAINEL_HOVER, COR_TEXTO)) {
-        modo_jogo = (modo_jogo == MODO_CASUAL) ? MODO_MANGUE : MODO_CASUAL;
-    }
-    gText("(clique para alternar)", (int)r_mode.x + (int)r_mode.width + 16,
-             (int)r_mode.y + 16, 16, COR_TEXTO);
-    y += 80;
-
     /* Fullscreen toggle */
     gText("Tela cheia", x, y, 22, COR_ACENTO);
     y += 34;
