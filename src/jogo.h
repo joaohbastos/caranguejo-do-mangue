@@ -16,8 +16,6 @@ typedef struct {
 
 ParametrosFase aplicarFaseAtual(int rodada);
 
-int alimentarCaranguejo(Caranguejo *inicio, int id);
-
 void aplicarFomeRodada(GameState *gs, int delta);
 
 void aplicarBonusRei(GameState *gs);

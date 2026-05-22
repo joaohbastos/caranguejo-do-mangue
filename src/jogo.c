@@ -1,24 +1,8 @@
 #include <stdlib.h>
-
 #include "colonia.h"
 #include "eventos.h"
 #include "game_state.h"
 #include "jogo.h"
-
-int alimentarCaranguejo(Caranguejo *inicio, int id) {
-    Caranguejo *atual = inicio;
-    while (atual != NULL) {
-        if (atual->id == id) {
-            atual->nivelFome -= 2;
-            if (atual->nivelFome < 0) {
-                atual->nivelFome = 0;
-            }
-            return 1;
-        }
-        atual = atual->proximo;
-    }
-    return 0;
-}
 
 ParametrosFase aplicarFaseAtual(int rodada) {
     ParametrosFase p;

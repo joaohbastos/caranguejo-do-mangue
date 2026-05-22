@@ -57,6 +57,21 @@ int removerCaranguejo(Caranguejo **inicio, int id) {
     return 0;
 }
 
+int alimentarCaranguejo(Caranguejo *inicio, int id) {
+    Caranguejo *atual = inicio;
+    while (atual != NULL) {
+        if (atual->id == id) {
+            atual->nivelFome -= 2;
+            if (atual->nivelFome < 0) {
+                atual->nivelFome = 0;
+            }
+            return 1;
+        }
+        atual = atual->proximo;
+    }
+    return 0;
+}
+
 void aumentarFome(Caranguejo *inicio) {
     Caranguejo *atual = inicio;
     while (atual != NULL) {

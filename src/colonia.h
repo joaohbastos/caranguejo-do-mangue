@@ -17,6 +17,8 @@ void inserirCaranguejo(Caranguejo **inicio, Caranguejo *novo);
 
 int removerCaranguejo(Caranguejo **inicio, int id);
 
+int alimentarCaranguejo(Caranguejo *inicio, int id);
+
 void aumentarFome(Caranguejo *inicio);
 
 int verificarMortes(Caranguejo **inicio);
