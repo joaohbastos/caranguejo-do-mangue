@@ -86,7 +86,7 @@ int inserirNovoCaranguejo(GameState *gs, int *idAlocado) {
         return 0;
     }
     int id = proximoIdDisponivel(gs->colonia);
-    Caranguejo *novo = criarCaranguejo(id, 0);
+    Caranguejo *novo = criarCaranguejo(id, 0, 0);
     if (novo == NULL) {
         return 0;
     }

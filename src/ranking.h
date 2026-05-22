@@ -14,7 +14,6 @@ int registrarPlacar(Registro **inicio, const char *nome, int pontuacao);
 
 void ordenarPlacar(Registro **inicio);
 
-
 int salvarPlacar(Registro *inicio);
 
 int carregarPlacar(Registro **inicio);

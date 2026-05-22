@@ -11,7 +11,7 @@ typedef struct Caranguejo {
     struct Caranguejo *proximo;
 } Caranguejo;
 
-Caranguejo *criarCaranguejo(int id, int ehRei);
+Caranguejo *criarCaranguejo(int id, int ehRei, int fomeInicial);
 
 void inserirCaranguejo(Caranguejo **inicio, Caranguejo *novo);
 

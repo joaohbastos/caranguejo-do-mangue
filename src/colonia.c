@@ -2,13 +2,18 @@
 
 #include "colonia.h"
 
-Caranguejo *criarCaranguejo(int id, int ehRei) {
+Caranguejo *criarCaranguejo(int id, int ehRei, int fomeInicial) {
     Caranguejo *novo = (Caranguejo *)malloc(sizeof(Caranguejo));
     if (novo == NULL) {
         return NULL;
     }
+    if (fomeInicial < 0) {
+        fomeInicial = 0;
+    } else if (fomeInicial > MAX_FOME) {
+        fomeInicial = MAX_FOME;
+    }
     novo->id               = id;
-    novo->nivelFome        = 0;
+    novo->nivelFome        = fomeInicial;
     novo->rodadasNaColonia = 0;
     novo->ehRei            = ehRei ? 1 : 0;
     novo->proximo          = NULL;

@@ -80,7 +80,7 @@ int inserirRei(GameState *gs, int proximoId) {
     if (gs == NULL) {
         return 0;
     }
-    Caranguejo *novo = criarCaranguejo(proximoId, 1);
+    Caranguejo *novo = criarCaranguejo(proximoId, 1, 0);
     if (novo == NULL) {
         return 0;
     }

@@ -626,7 +626,7 @@ void GameEnter(void) {
     gameStateInicializar(&game);
 
     for (int i = 1; i <= 4; i++) {
-        Caranguejo *c = criarCaranguejo(i, 0);
+        Caranguejo *c = criarCaranguejo(i, 0, 2);
         if (c != NULL) inserirCaranguejo(&game.colonia, c);
     }
 
