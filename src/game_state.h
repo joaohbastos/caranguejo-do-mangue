@@ -3,7 +3,7 @@
 
 #include "colonia.h"
 
-#define POLUICAO_MAX 10
+#define POLUICAO_MAX 5
 
 typedef struct {
     Caranguejo *colonia;

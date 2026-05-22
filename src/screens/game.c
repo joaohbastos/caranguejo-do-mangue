@@ -428,6 +428,17 @@ static void triggerEndOfRound(void) {
     aplicarFomeRodada(&game, fase.incrementoFome);
     ordenarPorFome(&game.colonia);
 
+    int poluicao_anterior = game.poluicao;
+    if ((rand() % 3) == 0) {
+        game.poluicao++;
+        if (game.poluicao > POLUICAO_MAX) game.poluicao = POLUICAO_MAX;
+    }
+    if (poluicao_anterior < POLUICAO_MAX && game.poluicao >= POLUICAO_MAX) {
+        dying_timer = DYING_SECONDS;
+        sub_state   = GS_DYING;
+        return;
+    }
+
     if ((rand() % 100) < fase.chanceEvento) {
         pending_event = sortearEvento();
         sub_state = (pending_event == EVENTO_REI) ? GS_KING_OFFER : GS_EVENT_MODAL;
