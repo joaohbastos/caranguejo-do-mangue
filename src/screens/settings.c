@@ -51,9 +51,6 @@ static void DrawConfirmDialog(void) {
     }
 }
 
-/* Desenha campo de nome (com cursor piscante), toggle de modo
- * (Casual / Mangue timer), botao destrutivo "Resetar ranking" e
- * "Voltar". O modal de confirmacao se sobrepoe quando ativo. */
 void SettingsDraw(void) {
     const char *title = "EDITAR";
     int title_size = 40;
@@ -63,7 +60,6 @@ void SettingsDraw(void) {
     int x = 120;
     int y = 130;
 
-    /* Player name field */
     gText("Nome do jogador", x, y, 22, COR_ACENTO);
     y += 34;
     Rectangle field = (Rectangle){ x, y, SCREEN_W - 2 * x, 50 };
@@ -71,14 +67,12 @@ void SettingsDraw(void) {
     DrawRectangleRoundedLines(field, 0.2f, 8, COR_ACENTO);
     gText(player_name, (int)field.x + 14, (int)field.y + 14, 24, COR_TEXTO);
 
-    /* Blinking cursor at the end of the buffer */
     int caret_x = (int)field.x + 14 + gMeasure(player_name, 24) + 2;
     if (((int)(GetTime() * 2)) % 2 == 0) {
         DrawRectangle(caret_x, (int)field.y + 12, 2, 28, COR_TEXTO);
     }
     y += 70;
 
-    /* Mode toggle */
     gText("Modo de jogo", x, y, 22, COR_ACENTO);
     y += 34;
     const char *mode_label = (modo_jogo == MODO_CASUAL)
