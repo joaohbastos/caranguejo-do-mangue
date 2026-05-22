@@ -112,8 +112,7 @@ void ordenarPorFome(Caranguejo **inicio) {
             ordenada = atual;
         } else {
             Caranguejo *busca = ordenada;
-            while (busca->proximo != NULL &&
-                   busca->proximo->nivelFome >= atual->nivelFome) {
+            while (busca->proximo != NULL && busca->proximo->nivelFome >= atual->nivelFome) {
                 busca = busca->proximo;
             }
             atual->proximo = busca->proximo;

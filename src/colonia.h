@@ -1,7 +1,7 @@
 #ifndef COLONIA_H
 #define COLONIA_H
 
-#define MAX_FOME 5
+#define MAX_FOME 7
 
 typedef struct Caranguejo {
     int id;
