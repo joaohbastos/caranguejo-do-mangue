@@ -3,6 +3,8 @@
 Jogo de gerenciamento estratégico de colônia de caranguejos, inspirado nos manguezais do Rio Capibaribe — desenvolvido em linguagem C para a disciplina de Algoritmos e Estruturas de Dados (AED 2026.1 — MOD 02), dentro da temática **"Na Vibe do Recife"**.
 
 ---
+## Link do jogo
+https://www.youtube.com/watch?v=oyYsaJg3UeE
 
 ## 📖 Sobre o Jogo
 
