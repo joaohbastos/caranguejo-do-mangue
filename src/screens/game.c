@@ -209,7 +209,10 @@ static void drawCrab(Caranguejo *c, int cx, int cy) {
 
     Texture2D tex = c->ehRei ? tex_crab_king : tex_crab;
     if (tex.id > 0) {
-        DrawTexture(tex, cx - tex.width / 2, cy - tex.height / 2, WHITE);
+        float sz = CRAB_RADIUS * 2.0f;
+        Rectangle src = { 0, 0, (float)tex.width, (float)tex.height };
+        Rectangle dst = { cx - sz / 2, cy - sz / 2, sz, sz };
+        DrawTexturePro(tex, src, dst, (Vector2){0, 0}, 0, WHITE);
     } else {
         Color body = c->ehRei ? COR_PRIMARIA : COR_ACENTO;
         DrawCircle(cx, cy, CRAB_RADIUS, body);
@@ -228,10 +231,10 @@ static void drawGhosts(void) {
         unsigned char a = (unsigned char)(ghosts[i].alpha * 255.0f);
         Texture2D tex = ghosts[i].ehRei ? tex_crab_king : tex_crab;
         if (tex.id > 0) {
-            DrawTexture(tex,
-                        ghosts[i].cx - tex.width / 2,
-                        ghosts[i].cy - tex.height / 2,
-                        (Color){255, 255, 255, a});
+            float sz = CRAB_RADIUS * 2.0f;
+            Rectangle src = { 0, 0, (float)tex.width, (float)tex.height };
+            Rectangle dst = { ghosts[i].cx - sz / 2, ghosts[i].cy - sz / 2, sz, sz };
+            DrawTexturePro(tex, src, dst, (Vector2){0, 0}, 0, (Color){255, 255, 255, a});
         } else {
             Color body = ghosts[i].ehRei ? COR_PRIMARIA : COR_ACENTO;
             body.a = a;
@@ -338,12 +341,19 @@ static void drawEventModal(void) {
 
 static void drawKingOfferModal(void) {
     dimBackground();
-    Rectangle box = dialogBox(580, 320);
+    Rectangle box = dialogBox(580, 390);
     DrawRectangleRounded(box, 0.08f, 8, COR_PAINEL);
 
     const char *t = "Caranguejo Rei";
     int tw = gMeasure(t, 32);
-    gText(t, (int)(box.x + (box.width - tw) / 2), (int)(box.y + 30), 32, COR_PRIMARIA);
+    gText(t, (int)(box.x + (box.width - tw) / 2), (int)(box.y + 24), 32, COR_PRIMARIA);
+
+    if (tex_crab_king.id > 0) {
+        float sz = 80.0f;
+        Rectangle src = { 0, 0, (float)tex_crab_king.width, (float)tex_crab_king.height };
+        Rectangle dst = { box.x + (box.width - sz) / 2, box.y + 72, sz, sz };
+        DrawTexturePro(tex_crab_king, src, dst, (Vector2){0, 0}, 0, WHITE);
+    }
 
     const char *l1 = "Um Caranguejo Rei se aproxima da colonia.";
     const char *l2 = "Aceitar: ele entra mas come o dobro de fome.";
@@ -351,12 +361,12 @@ static void drawKingOfferModal(void) {
     int l1w = gMeasure(l1, 18);
     int l2w = gMeasure(l2, 18);
     int l3w = gMeasure(l3, 18);
-    gText(l1, (int)(box.x + (box.width - l1w) / 2), (int)(box.y + 90),  18, COR_TEXTO);
-    gText(l2, (int)(box.x + (box.width - l2w) / 2), (int)(box.y + 120), 18, COR_TEXTO);
-    gText(l3, (int)(box.x + (box.width - l3w) / 2), (int)(box.y + 150), 18, COR_ACENTO);
+    gText(l1, (int)(box.x + (box.width - l1w) / 2), (int)(box.y + 170), 18, COR_TEXTO);
+    gText(l2, (int)(box.x + (box.width - l2w) / 2), (int)(box.y + 200), 18, COR_TEXTO);
+    gText(l3, (int)(box.x + (box.width - l3w) / 2), (int)(box.y + 230), 18, COR_ACENTO);
 
-    Rectangle r_reject = (Rectangle){ box.x + 60,             box.y + box.height - 70, 200, 50 };
-    Rectangle r_accept = (Rectangle){ box.x + box.width - 260, box.y + box.height - 70, 200, 50 };
+    Rectangle r_reject = (Rectangle){ box.x + 60,              box.y + box.height - 70, 200, 50 };
+    Rectangle r_accept = (Rectangle){ box.x + box.width - 260,  box.y + box.height - 70, 200, 50 };
 
     if (Button(r_reject, "Rejeitar", COR_PAINEL_HOVER, COR_ACENTO_HOVER, COR_TEXTO)) {
         pending_event = EVENTO_NENHUM;
@@ -378,20 +388,27 @@ static void drawKingOfferModal(void) {
 
 static void drawKingBonusModal(void) {
     dimBackground();
-    Rectangle box = dialogBox(560, 260);
+    Rectangle box = dialogBox(560, 330);
     DrawRectangleRounded(box, 0.08f, 8, COR_PAINEL);
 
     const char *t = "Bonus do Rei!";
     int tw = gMeasure(t, 32);
-    gText(t, (int)(box.x + (box.width - tw) / 2), (int)(box.y + 30), 32, COR_ACENTO);
+    gText(t, (int)(box.x + (box.width - tw) / 2), (int)(box.y + 24), 32, COR_ACENTO);
+
+    if (tex_crab_king.id > 0) {
+        float sz = 80.0f;
+        Rectangle src = { 0, 0, (float)tex_crab_king.width, (float)tex_crab_king.height };
+        Rectangle dst = { box.x + (box.width - sz) / 2, box.y + 72, sz, sz };
+        DrawTexturePro(tex_crab_king, src, dst, (Vector2){0, 0}, 0, WHITE);
+    }
 
     const char *l1 = "Seu Caranguejo Rei sobreviveu 5 rodadas.";
     char l2[80];
     snprintf(l2, sizeof(l2), "-2 de fome em todos +%d pontos.", KING_BONUS_PONTOS);
     int l1w = gMeasure(l1, 18);
     int l2w = gMeasure(l2, 18);
-    gText(l1, (int)(box.x + (box.width - l1w) / 2), (int)(box.y + 90),  18, COR_TEXTO);
-    gText(l2, (int)(box.x + (box.width - l2w) / 2), (int)(box.y + 120), 18, COR_TEXTO);
+    gText(l1, (int)(box.x + (box.width - l1w) / 2), (int)(box.y + 170), 18, COR_TEXTO);
+    gText(l2, (int)(box.x + (box.width - l2w) / 2), (int)(box.y + 200), 18, COR_TEXTO);
 
     Rectangle r_ok = (Rectangle){ box.x + box.width / 2 - 90, box.y + box.height - 70, 180, 50 };
     if (Button(r_ok, "Entendi", COR_PRIMARIA, COR_PRIMARIA_HOVER, COR_TEXTO)) {

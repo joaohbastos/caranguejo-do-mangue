@@ -20,7 +20,7 @@ Font      g_font        = {0};
 
 static void carregarRecursos(void) {
     tex_crab      = LoadTexture("assets/sprites/crab.png");
-    tex_crab_king = LoadTexture("assets/sprites/crab_king.png");
+    tex_crab_king = LoadTexture("assets/sprites/crab-king.png");
     tex_mangue_bg = LoadTexture("assets/sprites/mangue_bg.png");
 
     g_font = LoadFontEx("assets/fonts/PressStart2P-Regular.ttf", 32, NULL, 0);
