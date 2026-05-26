@@ -42,17 +42,6 @@ make gui
 6. O jogo termina quando qualquer caranguejo morre de fome
 7. Sua pontuação é registrada no **ranking de recordes**
 
-### Fases da partida
-
-| Fase | Rodadas | Descrição |
-|---|---|---|
-| 🌊 Maré Baixa | 1 – 5 | Introdução calma; fome cresce devagar |
-| 🌊🌊 Maré Cheia | 6 – 10 | Pressão aumenta; mais eventos e caranguejos novos |
-| ⛈️ Tempestade no Capibaribe | 11+ | Caos total; evento toda rodada; sobrevivência pura |
-
-
----
-
 ## 🧱 Estruturas de Dados e Algoritmos
 
 ### Lista Encadeada Simples — Colônia
